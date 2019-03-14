@@ -1,18 +1,17 @@
-import moduleTest from './moduleTest';
+import Tab from './tabs';
 
-// This comment shouldn't be visible in production
+document.addEventListener('DOMContentLoaded', function() {
+  initTabs();
+});
 
-class Webpack {
-  constructor(name) {
-    this.name = name;
-  }
+function initTabs() {
+  let tabs = document.getElementsByClassName('tabs');
+  let i = tabs.length;
 
-  sayHello() {
-    return `Hello ${this.name}!`;
+  while (i--) {
+    new Tab(tabs[i]);
   }
 }
 
-let webpack = new Webpack('webpack 4');
 
-console.log(webpack.sayHello());
-moduleTest();
+

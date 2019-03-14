@@ -1,4 +1,26 @@
+html {
+  font-size: 16px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
+}
+
+body {
+  font-family: $font-primary;
+  font-weight: 500;
+  background-color: $gray-200;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
 }

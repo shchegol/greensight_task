@@ -4,3 +4,18 @@ body {
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
 }
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('~@/fonts/montserrat/Montserrat-Medium.eot?#iefix') format('embedded-opentype'),
+  url('~@/fonts/montserrat/Montserrat-Medium.woff') format('woff'),
+  url('~@/fonts/montserrat/Montserrat-Medium.ttf')  format('truetype'),
+  url('~@/fonts/montserrat/Montserrat-Medium.svg#Montserrat-Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+h3, .h3  {
+  font-size: 32px;
+}

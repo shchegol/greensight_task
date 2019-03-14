@@ -28,7 +28,6 @@ module.exports = merge(common, {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      favicon: 'favicon.ico',
     }),
   ],
   devtool: 'inline-source-map',
@@ -36,6 +35,6 @@ module.exports = merge(common, {
     contentBase: './dist',
     port: 9000,
     compress: true,
-    open: false,
+    open: true,
   },
 });

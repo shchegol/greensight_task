@@ -10,7 +10,27 @@
 </head>
 
 <body>
-<!-- This comment shouldn't be visible in production -->
-<div class="svg"></div>
+<div class="container">
+    <div class="content">
+        <h3 class="title">Выберите способ доставки</h3>
+
+        <section class="tabs">
+            <nav class="tabs__menu">
+                <a href="#delivery" class="tabs__link tabs__link_active"><span class="tabs__link-text">Доставка</span></a>
+                <a href="#pickup" class="tabs__link"><span class="tabs__link-text">Самовывоз</span></a>
+            </nav>
+
+            <div class="tabs__content">
+                <article id="delivery" class="tabs__item tabs__item_active">
+                    Доставка
+                </article>
+
+                <article id="pickup" class="tabs__item">
+                    Самовывоз
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
 </body>
 </html>
