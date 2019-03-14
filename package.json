@@ -1,0 +1,40 @@
+{
+  "name": "webpack-4",
+  "version": "1.0.0",
+  "description": "Simple webpack config",
+  "main": "src/index.js",
+  "keywords": [
+    "webpack",
+    "es6",
+    "babel",
+    "sass"
+  ],
+  "author": "Alexander Shchegol",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config ./config/webpack.prod.js",
+    "start": "webpack-dev-server --config ./config/webpack.dev.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "autoprefixer": "^9.4.3",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "css-loader": "^2.1.0",
+    "cssnano": "^4.1.8",
+    "file-loader": "^3.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^4.6.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.1.5"
+  }
+}

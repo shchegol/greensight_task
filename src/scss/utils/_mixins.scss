@@ -1,0 +1,62 @@
+// media queries
+@mixin MQ($media) {
+    @if $media==xs {
+        @media (max-width: $S - 1) {
+            @content;
+        }
+    }
+    @else if $media==sm {
+        @media (min-width: $S) and (max-width: $M - 1) {
+            @content;
+        }
+    }
+    @else if $media==md {
+        @media (min-width: $M) and (max-width: $L - 1) {
+            @content;
+        }
+    }
+    @else if $media==lg {
+        @media (min-width: $L) {
+            @content;
+        }
+    }
+}
+
+@mixin MQasc($media) {
+  @if $media==sm {
+    @media (min-width: $S) {
+      @content;
+    }
+  }
+  @else if $media==md {
+    @media (min-width: $M) {
+      @content;
+    }
+  }
+  @else if $media==lg {
+    @media (min-width: $L) {
+      @content;
+    }
+  }
+}
+
+// center vertically and/or horizontally an absolute positioned element
+@mixin center($xy:xy) {
+  @if $xy == xy {
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+  @else if $xy == x {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+  @else if $xy == y {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+}
