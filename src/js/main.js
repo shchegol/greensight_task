@@ -5,13 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initTabs() {
-  let tabs = document.getElementsByClassName('tabs');
-  let i = tabs.length;
-
-  while (i--) {
-    new Tab(tabs[i]);
-  }
+  let tabs = document.getElementById('tabs');
+  new Tab(tabs);
 }
-
-
-

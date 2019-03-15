@@ -7,12 +7,17 @@
 
   &__link {
     position: relative;
-    display: inline-block;
+    display: none;
     padding: 30px;
-    text-decoration: none;
     color: $gray-700;
+    text-decoration: none;
 
-    &:hover {
+    @include MQasc(sm) {
+      display: inline-block;
+    }
+
+    &:hover,
+    &_active {
       color: $color-primary;
     }
 
@@ -46,7 +51,6 @@
 
     &_active {
       z-index: 2;
-      color: $color-primary;
 
       &::before {
         background-color: #fff;
@@ -60,23 +64,73 @@
   &__link-text {
     position: relative;
     z-index: 1;
+    pointer-events: none;
+  }
+
+  &__link-adaptive {
+    position: relative;
+    display: block;
+    margin-top: -1px;
+    padding: 16px 44px 16px 24px;
+    color: $gray-700;
+    border-top: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    text-decoration: none;
+
+    @include MQasc(sm) {
+      display: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      margin-top: -3px;
+      border: solid $gray-700;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+      transform: rotate(45deg);
+    }
+
+    &:hover,
+    &_active {
+      color: $color-primary;
+
+      &::after {
+        border-color: $color-primary;
+      }
+    }
+
+    &_active {
+      &::after {
+        transform: rotate(-135deg);
+      }
+    }
   }
 
   &__content {
-    position: relative;
-    z-index: 3;
-    padding: 30px;
     background-color: #fff;
-    border-radius: 0 $radius-primary $radius-primary $radius-primary;
+
+    @include MQasc(sm) {
+      position: relative;
+      z-index: 3;
+      padding: 30px;
+      border-radius: 0 $radius-primary $radius-primary $radius-primary;
+    }
   }
 
   &__item {
     display: none;
+    padding: 24px 16px;
+
+    @include MQasc(sm) {
+      padding: 0;
+    }
 
     &_active {
       display: block;
     }
   }
-
-
 }
