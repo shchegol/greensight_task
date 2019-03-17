@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Webpack starter</title>
+    <title>Greensight test</title>
+
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=8b035b84-f717-4c57-af14-d4f47711a513&lang=ru_RU" type="text/javascript"></script>
 </head>
 
 <body>
@@ -75,7 +77,7 @@
                             <label class="checkbox">
                                 <input type="radio" name="place" value="place-1" class="checkbox__input">
                                 <span class="checkbox__mark"></span>
-                                Пункт Выдачи заказов Песчаная улица, дом 13
+                                <span class="checkbox__text">Пункт Выдачи заказов Песчаная улица, дом 13</span>
                             </label>
                         </div>
 
@@ -83,8 +85,20 @@
                             <label class="checkbox">
                                 <input type="radio" name="place" value="place-2" class="checkbox__input">
                                 <span class="checkbox__mark"></span>
-                                Пункт Выдачи заказов Песчаная улица, дом 13
+                                <span class="checkbox__text">Пункт Выдачи заказов Подсосенский переулок, 11</span>
                             </label>
+                        </div>
+                    </div>
+
+                    <div class="row mt_2">
+                        <div class="col">
+                            <div id="map" class="map"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mt_2">
+                        <div class="col text_right">
+                            <button type="button" class="btn">Отправить</button>
                         </div>
                     </div>
                 </article>
@@ -92,5 +106,6 @@
         </section>
     </div>
 </div>
+
 </body>
 </html>
