@@ -10,17 +10,10 @@ html, body {
 body {
   font-family: $font-primary;
   font-weight: 500;
-  background-color: $gray-200;
+  background-color: #f6f6f6;
+  color: black;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.content {
-  width: 100%;
-  max-width: 1200px;
+*:focus {
+  outline: none;
 }

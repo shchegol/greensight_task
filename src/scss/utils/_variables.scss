@@ -1,23 +1,23 @@
 // colors
 $color-primary: #212bff;
+$color-primary-hover: #2029ea;
+$color-primary-pressed: #1e26d8;
 
-// shades of gray by material color
-$gray-50: #FAFAFA;
-$gray-100: #F5F5F5;
-$gray-200: #EEEEEE;
-$gray-300: #E0E0E0;
-$gray-400: #BDBDBD;
-$gray-500: #9E9E9E;
-$gray-600: #757575;
-$gray-700: #616161;
-$gray-800: #424242;
-$gray-900: #212121;
+$color-danger: #ff1e38;
+
+$color-gray-50: #f6f6f6;
+$color-gray-100: #dadef0;
+$color-gray-200: #edeeef;
+$color-gray-300: #c3c9db;
+$color-gray-400: #b8bed8;
+$color-gray-500: #8288a2;
 
 // fonts
 $font-primary: 'Montserrat', Arial, sans-serif;
 
 // radius
 $radius-primary: 8px;
+$radius-pill: 1000px;
 $radius-round: 100%;
 
 // breakpoints
