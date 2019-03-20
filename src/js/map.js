@@ -1,62 +1,69 @@
+export default class Map {
+  constructor(elem, options = {}) {
+    let defaults = {
+      coords: [],
+      style: {
+        iconLayout: 'default#image',
+        iconImageHref: 'static/svg/point.svg',
+        iconImageSize: [32, 44],
+        iconImageOffset: [-16, -44],
+      }
+    };
 
-// import {debounce} from './utils';
-//
-// export default class Tabs {
-//   /**
-//    * Tabs
-//    * @constructor
-//    * @param {object} elem - HTML elem
-//    * @param {object} options - An option map
-//    */
-//   constructor(elem, options = {}) {
-//     /** Default settings */
-//     let defaults = {
-//       startTab: 0,
-//       breakpoint: 768,
-//     };
-//
-//     for (let option in options) {
-//       if (!options.hasOwnProperty(option)) continue;
-//
-//       if (defaults[option] === undefined) {
-//         console.log(`Oops! Tabs do not have property: ${option}`);
-//         return this;
-//       }
-//
-//       defaults = options[option];
-//     }
-//
-//     this.elem = elem;
-//     this.options = defaults;
-//     this.btns = [...elem.getElementsByClassName('tabs__link')];
-//     this.phoneBtns = [...elem.getElementsByClassName('tabs__link-adaptive')];
-//     this.tabs = [...elem.getElementsByClassName('tabs__item')];
-//     this.activeTabIndex = this.options.startTab;
-//     this.isPhone = document.body.clientWidth < this.options.breakpoint;
-//
-//     this.init();
-//   }
-//
-//   init() {
-//     console.log('map init');
-//
-//     this.elem.ready(init);
-//     function init(){
-//       // Создание карты.
-//       var myMap = new ymaps.Map("map", {
-//         // Координаты центра карты.
-//         // Порядок по умолчанию: «широта, долгота».
-//         // Чтобы не определять координаты центра карты вручную,
-//         // воспользуйтесь инструментом Определение координат.
-//         center: [55.76, 37.64],
-//         // Уровень масштабирования. Допустимые значения:
-//         // от 0 (весь мир) до 19.
-//         zoom: 7
-//       });
-//     }
-//
-//     window.onresize = debounce(() => {
-//       console.log('resize')
-//     }, 200);
-//   }
-// }
+    for (let option in options) {
+
+      if (!options.hasOwnProperty(option)) continue;
+
+      if (defaults[option] === undefined) {
+        console.log(`Oops! Tabs do not have property: ${option}`);
+        return this;
+      }
+
+      defaults[option] = options[option];
+    }
+
+    this.elem = elem;
+    this.map = {};
+    this.options = defaults;
+    this.collection = {};
+    this.centerAndZoom = {};
+
+    this.init()
+  }
+
+  init() {
+    console.log('init PickupsMap');
+
+    ymaps.ready(() => {
+      this.map = new ymaps.Map(this.elem, {
+        center: [55.801131, 37.508167],
+        zoom: 9,
+      }, {
+        searchControlProvider: 'yandex#search',
+      });
+
+      this.collection = new ymaps.GeoObjectCollection(null, this.options.style);
+
+
+
+      for (let i = 0, max = this.options.coords.length; i < max; i++) {
+        this.collection.add(new ymaps.Placemark(this.options.coords[i]));
+      }
+
+      this.map.geoObjects.add(this.collection);
+    });
+  }
+
+  update() {
+    console.log('update PickupsMap');
+    this.centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
+        this.collection.getBounds(),
+        this.map.container.getSize(),
+        this.map.options.get('projection'),
+    );
+
+    console.log(this.centerAndZoom)
+
+    this.map.setCenter(this.centerAndZoom.center, this.centerAndZoom.zoom);
+  }
+}

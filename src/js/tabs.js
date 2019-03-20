@@ -1,5 +1,3 @@
-import {debounce} from './utils';
-
 export default class Tabs {
   /**
    * Tabs
@@ -22,7 +20,7 @@ export default class Tabs {
         return this;
       }
 
-      defaults = options[option];
+      defaults[option] = options[option];
     }
 
     this.elem = elem;
@@ -38,7 +36,7 @@ export default class Tabs {
 
   init() {
     console.log('init');
-    this.changeTab(this.activeTabIndex);
+    this.change(this.activeTabIndex);
 
     this.elem.onclick = event => {
       let btnClass = 'tabs__link';
@@ -54,21 +52,28 @@ export default class Tabs {
 
         if (index !== this.activeTabIndex) {
           this.activeTabIndex = index;
-          this.changeTab(index);
+          this.change(index);
         }
       }
     };
-
-    window.onresize = debounce(() => {
-      this.isPhone = document.body.clientWidth < this.options.breakpoint;
-      this.changeTab(this.activeTabIndex);
-    }, 200);
   }
 
-  changeTab(tabIndex) {
-    console.log('changeTab', tabIndex);
+  update() {
+    this.isPhone = document.body.clientWidth < this.options.breakpoint;
+    this.change(this.activeTabIndex);
+  }
+
+  change(tabIndex) {
+    console.log('change', tabIndex);
+
     let btnClass = 'tabs__link';
     let btnsArr = 'btns';
+    let widgetEvent = new CustomEvent("change", {
+      bubbles: true,
+      detail: {
+        activeTab: tabIndex,
+      }
+    });
 
     if(this.isPhone) {
       btnClass = 'tabs__link-adaptive';
@@ -87,6 +92,12 @@ export default class Tabs {
         removeClass(tab, 'tabs__item_active');
       }
     }
+
+    this.elem.dispatchEvent(widgetEvent);
+  }
+
+  getElem() {
+    return this.elem;
   }
 }
 
