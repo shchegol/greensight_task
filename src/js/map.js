@@ -1,13 +1,13 @@
 export default class Map {
   constructor(elem, options = {}) {
     let defaults = {
-      coords: [],
+      pickups: [],
       style: {
         iconLayout: 'default#image',
         iconImageHref: 'static/svg/point.svg',
         iconImageSize: [32, 44],
         iconImageOffset: [-16, -44],
-      }
+      },
     };
 
     for (let option in options) {
@@ -27,27 +27,28 @@ export default class Map {
     this.options = defaults;
     this.collection = {};
     this.centerAndZoom = {};
+    this.isSinglePickup = false;
 
-    this.init()
+    this.init();
   }
 
   init() {
     console.log('init PickupsMap');
-
     ymaps.ready(() => {
       this.map = new ymaps.Map(this.elem, {
-        center: [55.801131, 37.508167],
-        zoom: 9,
-      }, {
-        searchControlProvider: 'yandex#search',
+        center: [55.753674, 37.619932],
+        zoom: 12,
       });
 
-      this.collection = new ymaps.GeoObjectCollection(null, this.options.style);
+      if (this.options.pickups.length > 1) {
+        this.collection = new ymaps.GeoObjectCollection(null, this.options.style);
 
-
-
-      for (let i = 0, max = this.options.coords.length; i < max; i++) {
-        this.collection.add(new ymaps.Placemark(this.options.coords[i]));
+        for (let i = 0, max = this.options.pickups.length; i < max; i++) {
+          this.collection.add(new ymaps.Placemark(this.options.pickups[i].coords));
+        }
+      } else {
+        this.collection = new ymaps.Placemark(this.options.pickups[0].coords, null, this.options.style);
+        this.isSinglePickup = true;
       }
 
       this.map.geoObjects.add(this.collection);
@@ -56,14 +57,18 @@ export default class Map {
 
   update() {
     console.log('update PickupsMap');
-    this.centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
-        this.collection.getBounds(),
-        this.map.container.getSize(),
-        this.map.options.get('projection'),
-    );
+    this.map.container.fitToViewport();
 
-    console.log(this.centerAndZoom)
+    if (!this.isSinglePickup) {
+      this.centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
+          this.collection.getBounds(),
+          this.map.container.getSize(),
+          this.map.options.get('projection'),
+      );
 
-    this.map.setCenter(this.centerAndZoom.center, this.centerAndZoom.zoom);
+      this.map.setCenter(this.centerAndZoom.center, this.centerAndZoom.zoom - 1);
+    } else {
+      this.map.setCenter(this.options.pickups[0].coords, 17);
+    }
   }
 }

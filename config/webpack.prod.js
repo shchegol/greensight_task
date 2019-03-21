@@ -1,13 +1,11 @@
-const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
+
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir);
-}
+const util = require('./utils');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -30,15 +28,16 @@ module.exports = merge(common, {
               ],
             },
           },
+          'resolve-url-loader',
           'sass-loader',
         ],
       },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {root: resolve('')}),
+    new CleanWebpackPlugin(['dist'], {root: util.resolve('')}),
     new HtmlWebpackPlugin({
-      filename: resolve('dist/index.html'),
+      filename: util.resolve('dist/index.html'),
       template: 'src/index.html',
       favicon: 'favicon.ico',
       minify: {

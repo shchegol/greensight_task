@@ -42,7 +42,7 @@ export default class Tabs {
       let btnClass = 'tabs__link';
       let btnsArr = 'btns';
 
-      if(this.isPhone) {
+      if (this.isPhone) {
         btnClass = 'tabs__link-adaptive';
         btnsArr = 'phoneBtns';
       }
@@ -68,14 +68,14 @@ export default class Tabs {
 
     let btnClass = 'tabs__link';
     let btnsArr = 'btns';
-    let widgetEvent = new CustomEvent("change", {
+    let widgetEvent = new CustomEvent('changeTab', {
       bubbles: true,
       detail: {
         activeTab: tabIndex,
-      }
+      },
     });
 
-    if(this.isPhone) {
+    if (this.isPhone) {
       btnClass = 'tabs__link-adaptive';
       btnsArr = 'phoneBtns';
     }
@@ -94,10 +94,6 @@ export default class Tabs {
     }
 
     this.elem.dispatchEvent(widgetEvent);
-  }
-
-  getElem() {
-    return this.elem;
   }
 }
 

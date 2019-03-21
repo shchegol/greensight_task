@@ -4,23 +4,51 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    open: true,
+  },
   module: {
     rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules/,
         use: [
-          'style-loader',
-          'css-loader',
+          {
+            loader: 'style-loader',
+            options: {
+              sourceMap: true
+            },
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            },
+          },
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: true,
               plugins: [
-                require('autoprefixer')({browsers: ['last 2 versions']}),
+                require('autoprefixer')({
+                  browsers: ['last 2 versions'],
+                }),
               ],
             },
           },
-          'sass-loader',
+          {
+            loader: 'resolve-url-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
         ],
       },
     ],
@@ -30,11 +58,4 @@ module.exports = merge(common, {
       template: 'src/index.html',
     }),
   ],
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    port: 9000,
-    compress: true,
-    open: true,
-  },
 });
