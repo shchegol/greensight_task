@@ -1,4 +1,4 @@
-import Tabs       from './tabs';
+import Tab      from './tab';
 import Map        from './map';
 import {debounce} from './utils';
 
@@ -13,22 +13,30 @@ let pickups = [
   }
 ];
 
-document.addEventListener('DOMContentLoaded', function() {
-  let tabsElement = document.getElementById('tabs');
-  let mapElement = document.getElementById('map');
-  let map = new Map(mapElement, {
+document.addEventListener('DOMContentLoaded', () => {
+  const tabsElement = document.getElementById('tabs');
+  const mapElement = document.getElementById('map');
+  const breakpoint = 768;
+
+  const tabs = new Tab(tabsElement);
+  const map = new Map(mapElement, {
     pickups: pickups,
   });
-  let tabs = new Tabs(tabsElement);
 
   tabsElement.addEventListener('changeTab', (event) => {
     if (event.detail.activeTab === 1) {
-      map.update();
+      map.update({isPhone: checkBreakpoint(breakpoint)});
     }
   });
 
   window.onresize = debounce(() => {
-    tabs.update();
-    map.update();
+    let isPhone = checkBreakpoint(breakpoint);
+
+    tabs.update({isPhone: isPhone});
+    map.update({isPhone: isPhone});
   }, 200);
 });
+
+function checkBreakpoint(breakpoint) {
+  return document.body.clientWidth < breakpoint
+}

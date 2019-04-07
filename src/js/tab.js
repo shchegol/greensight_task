@@ -1,6 +1,6 @@
-export default class Tabs {
+export default class Tab {
   /**
-   * Tabs
+   * Tab
    * @constructor
    * @param {object} elem - HTML elem
    * @param {object} options - An option map
@@ -8,15 +8,15 @@ export default class Tabs {
   constructor(elem, options = {}) {
     /** Default settings */
     let defaults = {
+      isPhone: document.body.clientWidth < 768,
       startTab: 0,
-      breakpoint: 768,
     };
 
     for (let option in options) {
       if (!options.hasOwnProperty(option)) continue;
 
       if (defaults[option] === undefined) {
-        console.log(`Oops! Tabs do not have property: ${option}`);
+        console.log(`Oops! Tab do not have property: ${option}`);
         return this;
       }
 
@@ -29,7 +29,6 @@ export default class Tabs {
     this.phoneBtns = [...elem.getElementsByClassName('tabs__link-adaptive')];
     this.tabs = [...elem.getElementsByClassName('tabs__item')];
     this.activeTabIndex = this.options.startTab;
-    this.isPhone = document.body.clientWidth < this.options.breakpoint;
 
     this.init();
   }
@@ -42,7 +41,7 @@ export default class Tabs {
       let btnClass = 'tabs__link';
       let btnsArr = 'btns';
 
-      if (this.isPhone) {
+      if (this.options.isPhone) {
         btnClass = 'tabs__link-adaptive';
         btnsArr = 'phoneBtns';
       }
@@ -58,13 +57,27 @@ export default class Tabs {
     };
   }
 
-  update() {
-    this.isPhone = document.body.clientWidth < this.options.breakpoint;
+  update(options) {
+    console.log('update tab', options);
+    if (options !== undefined) {
+      for (let option in options) {
+
+        if (!options.hasOwnProperty(option)) continue;
+
+        if (this.options[option] === undefined) {
+          console.log(`Oops! Tabs do not have property: ${option}`);
+          return this;
+        }
+
+        this.options[option] = options[option];
+      }
+    }
+
     this.change(this.activeTabIndex);
   }
 
   change(tabIndex) {
-    console.log('change', tabIndex);
+    console.log('change tab', tabIndex);
 
     let btnClass = 'tabs__link';
     let btnsArr = 'btns';
@@ -75,7 +88,7 @@ export default class Tabs {
       },
     });
 
-    if (this.isPhone) {
+    if (this.options.isPhone) {
       btnClass = 'tabs__link-adaptive';
       btnsArr = 'phoneBtns';
     }

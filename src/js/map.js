@@ -8,14 +8,14 @@ export default class Map {
         iconImageSize: [32, 44],
         iconImageOffset: [-16, -44],
       },
+      isPhone: document.body.clientWidth < 768,
     };
 
     for (let option in options) {
-
       if (!options.hasOwnProperty(option)) continue;
 
       if (defaults[option] === undefined) {
-        console.log(`Oops! Tabs do not have property: ${option}`);
+        console.log(`Oops! Map do not have property: ${option}`);
         return this;
       }
 
@@ -32,11 +32,17 @@ export default class Map {
     this.init();
   }
 
+  static isTouchDevice() {
+    return ('ontouchstart' in window);
+  }
+
   init() {
-    console.log('init PickupsMap');
+    console.log('init map');
+
     ymaps.ready(() => {
       this.map = new ymaps.Map(this.elem, {
         center: [55.753674, 37.619932],
+        controls: ['zoomControl'],
         zoom: 12,
       });
 
@@ -52,12 +58,29 @@ export default class Map {
       }
 
       this.map.geoObjects.add(this.collection);
+      this.changeScrollAbility(Map.isTouchDevice());
     });
   }
 
-  update() {
-    console.log('update PickupsMap');
+  update(options) {
+    console.log('update map', options);
+
+    if (options !== undefined) {
+      for (let option in options) {
+
+        if (!options.hasOwnProperty(option)) continue;
+
+        if (this.options[option] === undefined) {
+          console.log(`Oops! Map do not have property: ${option}`);
+          return this;
+        }
+
+        this.options[option] = options[option];
+      }
+    }
+
     this.map.container.fitToViewport();
+    this.changeScrollAbility(Map.isTouchDevice());
 
     if (!this.isSinglePickup) {
       this.centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
@@ -69,6 +92,19 @@ export default class Map {
       this.map.setCenter(this.centerAndZoom.center, this.centerAndZoom.zoom - 1);
     } else {
       this.map.setCenter(this.options.pickups[0].coords, 17);
+    }
+  }
+
+  changeScrollAbility(state) {
+    console.log('changeScrollAbility', state);
+    let behaviors = this.map.behaviors;
+
+    if (state) {
+      behaviors.disable('scrollZoom');
+      behaviors.disable('drag');
+    } else {
+      behaviors.enable('scrollZoom');
+      behaviors.enable('drag');
     }
   }
 }
