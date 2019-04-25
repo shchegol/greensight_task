@@ -1,74 +1,122 @@
 export default class Map {
-  constructor(elem, options = {}) {
-    let defaults = {
-      pickups: [],
-      style: {
-        iconLayout: 'default#image',
-        iconImageHref: 'static/svg/point.svg',
-        iconImageSize: [32, 44],
-        iconImageOffset: [-16, -44],
-      },
-    };
+  #defaults = {
+    style: {},
+    behaviors: {
+      scrollZoom: false,
+      drag: true,
+    },
+  };
+  #isSinglePickup = false;
+  #collection;
+  #centerAndZoom = {
+    center: [55.753674, 37.619932],
+    zoom: 17,
+  };
+  #points;
+  #elem;
+  #map;
 
-    for (let option in options) {
+  options;
 
-      if (!options.hasOwnProperty(option)) continue;
-
-      if (defaults[option] === undefined) {
-        console.log(`Oops! Tabs do not have property: ${option}`);
-        return this;
-      }
-
-      defaults[option] = options[option];
+  constructor(elem, points, options) {
+    if (!elem) {
+      console.log('class Map must contain an element');
+      return
     }
 
-    this.elem = elem;
-    this.map = {};
-    this.options = defaults;
-    this.collection = {};
-    this.centerAndZoom = {};
-    this.isSinglePickup = false;
+    if (Map.checkType(points) === 'array') {
+      this.#points = points;
+    }
 
-    this.init();
+    if (Map.checkType(options) === 'object') {
+      this.#setOptions(this.#defaults, options);
+    }
+
+    this.#elem = elem;
+    this.options = this.#defaults;
+    this.#init();
   }
 
-  init() {
-    console.log('init PickupsMap');
+  #init() {
     ymaps.ready(() => {
-      this.map = new ymaps.Map(this.elem, {
-        center: [55.753674, 37.619932],
-        zoom: 12,
-      });
+      this.#map = new ymaps.Map(this.#elem, this.#centerAndZoom);
 
-      if (this.options.pickups.length > 1) {
-        this.collection = new ymaps.GeoObjectCollection(null, this.options.style);
+      if (this.#points.length > 1) {
+        this.#collection = new ymaps.GeoObjectCollection(null, this.options.style);
 
-        for (let i = 0, max = this.options.pickups.length; i < max; i++) {
-          this.collection.add(new ymaps.Placemark(this.options.pickups[i].coords));
+        for (let i = 0, max = this.#points.length; i < max; i++) {
+          this.#collection.add(new ymaps.Placemark(this.#points[i].coords));
         }
       } else {
-        this.collection = new ymaps.Placemark(this.options.pickups[0].coords, null, this.options.style);
-        this.isSinglePickup = true;
+        this.#collection = new ymaps.Placemark(this.#points[0].coords, null, this.options.style);
+        this.#isSinglePickup = true;
       }
 
-      this.map.geoObjects.add(this.collection);
+      this.#map.geoObjects.add(this.#collection);
+      this.rerender();
     });
   }
 
-  update() {
-    console.log('update PickupsMap');
-    this.map.container.fitToViewport();
+  #setOptions(currentOpt, newOpt) {
+    for (let option in newOpt) {
+      if (!newOpt.hasOwnProperty(option)) continue;
 
-    if (!this.isSinglePickup) {
-      this.centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
-          this.collection.getBounds(),
-          this.map.container.getSize(),
-          this.map.options.get('projection'),
+      if (typeof newOpt[option] === 'object' && currentOpt[option] !== undefined) {
+        this.#setOptions(currentOpt[option], newOpt[option]);
+      } else {
+        currentOpt[option] = newOpt[option];
+      }
+    }
+  }
+
+  #changeBehavior() {
+    for (let behavior in this.options.behaviors) {
+      if (!this.options.behaviors.hasOwnProperty(behavior)) continue;
+
+      if (this.options.behaviors[behavior]) {
+        this.#map.behaviors.enable(behavior);
+      } else {
+        this.#map.behaviors.disable(behavior);
+      }
+    }
+  }
+
+  static checkType(value) {
+    let regex = /^\[object (\S+?)\]$/;
+    let matches = Object.prototype.toString.call(value).match(regex) || [];
+
+    return (matches[1] || 'undefined').toLowerCase();
+  }
+
+  setPoints() {
+
+  }
+
+  addPoints() {
+
+  }
+
+  update(options = {}) {
+    ymaps.ready(() => {
+      this.#setOptions(this.options, options);
+      this.#changeBehavior.bind(this)();
+      this.rerender();
+    });
+  }
+
+  rerender() {
+    this.#map.container.fitToViewport();
+
+    if (!this.#isSinglePickup) {
+      this.#centerAndZoom = ymaps.util.bounds.getCenterAndZoom(
+          this.#collection.getBounds(),
+          this.#map.container.getSize(),
+          this.#map.options.get('projection'),
       );
 
-      this.map.setCenter(this.centerAndZoom.center, this.centerAndZoom.zoom - 1);
+      this.#map.setCenter(this.#centerAndZoom.center, this.#centerAndZoom.zoom - 1);
     } else {
-      this.map.setCenter(this.options.pickups[0].coords, 17);
+      this.#map.setCenter(this.#points[0].coords, 17);
     }
   }
 }
