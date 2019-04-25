@@ -31,6 +31,8 @@ export default class Tab {
     this.activeTabIndex = this.options.startTab;
 
     this.init();
+
+    return elem;
   }
 
   init() {

@@ -1,4 +1,4 @@
-import Tabs       from './tabs';
+import Tab       from './tab';
 import Map        from './map';
 import {debounce} from './utils';
 
@@ -18,14 +18,14 @@ import {debounce} from './utils';
   document.addEventListener('DOMContentLoaded', initAll);
 
   function initAll() {
-    let tabsElement     = document.getElementById('tabs'),
+    let tabElement     = document.getElementById('tabs'),
         mapElement      = document.getElementById('map'),
-        tabs            = new Tabs(tabsElement),
-        tabsFirstChange = true,
+        tab            = new Tab(tabElement),
+        tabFirstChange = true,
         map;
 
-    tabsElement.addEventListener('changeTab', () => {
-      if (tabsFirstChange) {
+    tab.addEventListener('changeTab', () => {
+      if (tabFirstChange) {
         map = new Map(mapElement, pickups, {
           style: {
             iconLayout: 'default#image',
@@ -35,17 +35,17 @@ import {debounce} from './utils';
           },
         });
 
-        tabsFirstChange = false;
+        tabFirstChange = false;
       }
     });
 
     window.onresize = debounce(() => {
       isPhone = checkBreakpoint(breakpoint);
 
-      tabs.update();
+      tab.update();
       map.rerender();
 
-      // tabs.update({isPhone: isPhone});
+      // tab.update({isPhone: isPhone});
       // map.update({isPhone: isPhone});
     }, 200);
 
