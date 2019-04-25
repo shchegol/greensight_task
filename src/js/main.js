@@ -3,7 +3,8 @@ import Map        from './map';
 import {debounce} from './utils';
 
 (function() {
-  // pickups data
+  const breakpoint = 768;
+  let isPhone = false;
   let pickups = [
     {
       coords: [55.801131, 37.508167],
@@ -39,12 +40,19 @@ import {debounce} from './utils';
     });
 
     window.onresize = debounce(() => {
+      isPhone = checkBreakpoint(breakpoint);
+
       tabs.update();
       map.rerender();
+
+      // tabs.update({isPhone: isPhone});
+      // map.update({isPhone: isPhone});
     }, 200);
 
     document.removeEventListener('DOMContentLoaded', initAll);
   }
 
-
+  function checkBreakpoint(breakpoint) {
+    return document.body.clientWidth < breakpoint
+  }
 })();
